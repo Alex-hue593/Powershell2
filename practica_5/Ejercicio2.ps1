@@ -1,14 +1,6 @@
-﻿function usuarios {
-    param(
-        $ruta  
-    )
+﻿$usuarios = Import-Csv C:\Users\Administrador\Desktop\archivos\usuarios.csv -Delimiter ","
 
-    $lista = Import-Csv -Path $ruta
+foreach ($em in $usuarios){
+    Write-Host "usuario: $($em.nombre) Apellido: $($em.apellidos) Grupo: $($em.grupo)"
 
-    foreach ($usuario in $lista) {
-        # Imprimimos los campos específicos
-        Write-Host "Nombre: $($usuario.nombre), Apellidos: $($usuario.apellidos), Grupo: $($usuario.grupo)"
-    }
 }
-
-usuarios -ruta "C:\Users\Administrador\Downloads\usuarios.csv"

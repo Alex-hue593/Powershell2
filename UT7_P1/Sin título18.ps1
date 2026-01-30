@@ -1,4 +1,5 @@
-﻿Import-Csv -Path "C:\Users\Administrador\Desktop\archivos\carpeta\empleados.csv"
+﻿$departamentos = Import-Csv -Path "C:\Users\Administrador\Desktop\Ejercicios\archivos\carpeta\empleados.csv"
+#poner tu propia ruta
 
 New-ADOrganizationalUnit -Name "Empresa" -Path "DC=EMPRESA,DC=LOCAL" -Description "Unidad Empresa"
 

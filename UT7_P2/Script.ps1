@@ -17,9 +17,9 @@ foreach ($em in $departamentos){
 
     #regla
     $acl = Get-Acl -Path $rutaN
-    $regla2 = @("$($em.departamento)", 'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
-    $ace= New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $regla2
-    $acl.SetAccessRule($ace)
+    $regla2 = New-Object System.Security.AccessControl.FileSystemAccessRule("EMPRESA\$(.$em.departamentos)", "Modify", "Allow")
+#    $ace= New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $regla2
+    $acl.SetAccessRule($regla2)
     $acl | Set-Acl -Path $rutaN
 }
 

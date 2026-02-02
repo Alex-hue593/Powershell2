@@ -1,6 +1,6 @@
-﻿$departamentos = Import-Csv -Path C:\Users\Administrador\Desktop\Ejercicios\archivos\carpeta\departamentos.csv -Delimiter ";"
+﻿$departamentos = Import-Csv -Path C:\Users\Administrador\Desktop\archivos\carpeta\departamentos.csv -Delimiter ";"
 #poner tu propia ruta
-$empleados = Import-Csv -Path C:\Users\Administrador\Desktop\Ejercicios\archivos\carpeta\empleados.csv -Delimiter ";"
+$empleados = Import-Csv -Path C:\Users\Administrador\Desktop\archivos\carpeta\empleados.csv -Delimiter ";"
 
 New-ADOrganizationalUnit -Name "Empresa" -Path "DC=EMPRESA,DC=LOCAL" -Description "Unidad Empresa"
 

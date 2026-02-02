@@ -1,32 +1,54 @@
-﻿$departamentos = Import-Csv -Path C:\Users\Administrador\Desktop\Ejercicios\archivos\carpeta\departamentos.csv -Delimiter ";"
+﻿$departamentos = Import-Csv -Path C:\Users\Administrador\Desktop\archivos\carpeta\departamentos.csv -Delimiter ";"
 
+
+#RAIZ
 $ruta = "C:\Empresa"
+New-Item -Path $ruta -ItemType Directory -Force
 
-New-Item -Path $ruta -ItemType Directory
+$aclRaiz = Get-Acl -Path $ruta
+$aclRaiz.SetAccessRuleProtection($true, $false)
+$reglaRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Usuarios del Dominio", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
+$aclRaiz.SetAccessRule($reglaRaiz)
 
-$acl = Get-Acl -Path $ruta
-#regla
-$regla = @('Todos', 'Read', 'ContainerInherit, ObjectInherit', 'None', 'Allow')
-$ace= New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $regla
-$acl.SetAccessRule($ace)
-$acl | Set-Acl -Path $ruta
+$arAdminRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Administradores", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+$aclRaiz.AddAccessRule($arAdminRaiz)
+
+$arUserRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Usuarios del Dominio", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
+$aclRaiz.AddAccessRule($arUserRaiz)
+
+$arAdminRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Administradores", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+$aclRaiz.AddAccessRule($arAdminRaiz)
+
+Set-Acl -Path $ruta -aclObject $aclRaiz
+
+
+
 
 foreach ($em in $departamentos){
-    $rutaN = "$ruta\$($em.departamento)"
-    New-Item -Path $rutaN -ItemType Directory
+    $nombreDept = $em.departamento
+    $rutaN = "$ruta\$nombreDept"
+    New-Item -Path $rutaN -ItemType Directory -Force
 
     #regla
-    $acl = Get-Acl -Path $rutaN
-    $regla2 = New-Object System.Security.AccessControl.FileSystemAccessRule("EMPRESA\$(.$em.departamentos)", "Modify", "Allow")
+    $aclDept = Get-Acl -Path $rutaN
+    $aclDept.SetAccessRuleProtection($true, $false)
+
+    $reglaDept = New-Object System.Security.AccessControl.FileSystemAccessRule("EMPRESA\$nombreDept", "Modify", "ContainerInherit, ObjectInherit", "None", "Allow")
 #    $ace= New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $regla2
-    $acl.SetAccessRule($regla2)
-    $acl | Set-Acl -Path $rutaN
+    $aclDept.AddAccessRule($reglaDept)
+   
+
+   #Administradores
+   $reglaAdmin = New-Object System.Security.AccessControl.FileSystemAccessRule("Administradores", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+   $aclDept.AddAccessRule($reglaAdmin)
+
+   Set-Acl -Path $rutaN -aclObject $aclDept
 }
 
 
 #recurso compartido
 
-New-SmbShare -Path C:\Empresa -Name Empresa
+New-SmbShare -Path $ruta -Name "Empresa" -FullAccess "Usuarios del Dominio"
 
 
 

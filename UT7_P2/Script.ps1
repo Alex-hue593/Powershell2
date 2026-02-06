@@ -16,8 +16,9 @@ $aclRaiz.AddAccessRule($arAdminRaiz)
 $arUserRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Usuarios del Dominio", "ReadAndExecute", "ContainerInherit, ObjectInherit", "None", "Allow")
 $aclRaiz.AddAccessRule($arUserRaiz)
 
-$arAdminRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Administradores", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
-$aclRaiz.AddAccessRule($arAdminRaiz)
+#Sobra
+#$arAdminRaiz = New-Object System.Security.AccessControl.FileSystemAccessRule("Administradores", "FullControl", "ContainerInherit, ObjectInherit", "None", "Allow")
+#$aclRaiz.AddAccessRule($arAdminRaiz)
 
 Set-Acl -Path $ruta -aclObject $aclRaiz
 

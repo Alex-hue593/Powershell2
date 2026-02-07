@@ -36,7 +36,7 @@ foreach ($u in $empleados) {
                -HomeDrive "Z:" `
                -HomeDirectory "\\Empresa-dc1\Empresa_users$\$cuenta"
     
-    Write-Host "Procesado: $cuenta" -ForegroundColor Cyan
+    Write-Host "Procesado: $cuenta" 
 }
 
 

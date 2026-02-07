@@ -1,1 +1,1 @@
-﻿
+﻿Remove-Item -Path "C:\Empresa_users" -Recurse -Force
